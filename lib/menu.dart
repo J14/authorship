@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:authorship/content.dart';
 import 'package:authorship/activity.dart';
+import 'package:authorship/location.dart';
 
 
 class Menu extends StatelessWidget {
@@ -19,7 +20,10 @@ class Menu extends StatelessWidget {
                 RaisedButton(
                   child: Text("Criar Localização"),
                   onPressed: () {
-                    print("Criar Localização");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LocationPage())
+                    );
                   },
                 ),
                 RaisedButton(
