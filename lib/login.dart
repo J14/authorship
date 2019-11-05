@@ -3,8 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:authorship/menu.dart';
-
 class LoginApp extends StatefulWidget {
   final String loginUrl = "https://pibic-project.herokuapp.com/login";
 
