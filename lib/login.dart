@@ -27,10 +27,7 @@ class LoginAppState extends State<LoginApp> {
     );
 
     if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Menu())
-      );
+      Navigator.pushReplacementNamed(context, '/menu');
     }
 
     return "Successfully";
