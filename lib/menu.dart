@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:authorship/content.dart';
-import 'package:authorship/activity.dart';
-import 'package:authorship/location.dart';
-
 
 class Menu extends StatelessWidget {
   @override
@@ -20,28 +16,19 @@ class Menu extends StatelessWidget {
                 RaisedButton(
                   child: Text("Criar Localização"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LocationPage())
-                    );
+                    Navigator.pushNamed(context, '/location');
                   },
                 ),
                 RaisedButton(
                   child: Text("Criar Conteúdo"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ContentPage())
-                    );
+                    Navigator.pushNamed(context, '/content');
                   },
                 ),
                 RaisedButton(
                   child: Text("Criar Atividade"),
                   onPressed: () {
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => ActivityPage())
-                    );
+                    Navigator.pushNamed(context, '/activity');
                   },
                 ),
               ],
@@ -50,7 +37,7 @@ class Menu extends StatelessWidget {
           RaisedButton(
             child: Text("Sair"),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
         ],
