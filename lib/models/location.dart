@@ -13,7 +13,6 @@ class Location {
       "description": this.description,
       "longitude": this.longitude,
       "latitude": this.latitude,
-      "teacher": 1
     };
 
   Location.fromJson(Map<String, dynamic> dataJson)
