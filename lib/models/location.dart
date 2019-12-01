@@ -2,20 +2,24 @@ class Location {
   String id;
   final String name;
   final String description;
-  final List coord; // [longitude, latitude]
+  final double longitude;
+  final double latitude;
 
-  Location(this.name, this.description, this.coord);
+  Location({this.name, this.description, this.longitude, this.latitude});
 
   Map<String, dynamic> toJson() =>
     {
       "name": this.name,
       "description": this.description,
-      "coord": this.coord
+      "longitude": this.longitude,
+      "latitude": this.latitude,
+      "teacher": 1
     };
 
   Location.fromJson(Map<String, dynamic> dataJson)
     : this.id = dataJson['_id'],
       this.name = dataJson['name'],
       this.description = dataJson['description'],
-      this.coord = dataJson['coord'];
+      this.longitude = dataJson['longitude'],
+      this.latitude = dataJson['latitude'];
 }

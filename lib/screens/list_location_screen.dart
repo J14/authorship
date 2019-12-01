@@ -3,9 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:authorship/models/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListLocation extends StatefulWidget {
-  final String url = "https://pibic-project.herokuapp.com/location";
+  final String url = "https://class-path-location.herokuapp.com/location/";
 
   @override
   State<ListLocation> createState() {
@@ -18,10 +19,13 @@ class ListLocationState extends State<ListLocation> {
   List locations;
 
   Future<String> getAllLocations() async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token");
     var response = await http.get(
       Uri.encodeFull(widget.url),
       headers: {
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "Authentication": "Token $token"
       }
     );
 

@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:authorship/models/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LocationPage extends StatefulWidget {
-  final String url = "https://pibic-project.herokuapp.com/location";
+  final String url = "https://class-path-location.herokuapp.com/location/";
 
   @override
   State<LocationPage> createState() {
@@ -22,11 +23,15 @@ class LocationPageState extends State<LocationPage> {
   Position position;
 
   Future<String> _save(Location location) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token");
+
     var response = await http.post(
       Uri.encodeFull(widget.url),
       body: json.encode(location),
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        "Authenticate": "Token $token"
       }
     );
 
@@ -98,9 +103,10 @@ class LocationPageState extends State<LocationPage> {
                   onPressed: () {
                     if (_formKey.currentState.validate() && position != null) {
                       Location location = Location(
-                        nameController.text,
-                        descriptionController.text,
-                        [position.longitude, position.latitude]
+                        name: nameController.text,
+                        description: descriptionController.text,
+                        latitude: position.latitude,
+                        longitude: position.longitude,
                       );
 
                       _save(location);
