@@ -3,8 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:authorship/models/user.dart';
+
 class LoginApp extends StatefulWidget {
-  final String loginUrl = "https://pibic-project.herokuapp.com/login";
+  final String loginUrl = "http://class-path-auth.herokuapp.com/login/";
 
   @override
   LoginAppState createState() => LoginAppState();
@@ -25,6 +27,7 @@ class LoginAppState extends State<LoginApp> {
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       Navigator.pushReplacementNamed(context, '/menu');
     }
 
@@ -84,17 +87,4 @@ class LoginAppState extends State<LoginApp> {
       ),
     );
   }
-}
-
-class User {
-  final String username;
-  final String password;
-
-  User(this.username, this.password);
-
-  Map<String, String> toJson() =>
-    {
-      'username': username,
-      'password': password,
-    };
 }

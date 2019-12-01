@@ -1,9 +1,10 @@
-import 'package:authorship/activity.dart';
-import 'package:authorship/content.dart';
-import 'package:authorship/location.dart';
 import 'package:flutter/material.dart';
-import 'package:authorship/login.dart';
-import 'package:authorship/menu.dart';
+
+import 'package:authorship/pages/activity_page.dart';
+import 'package:authorship/pages/content_page.dart';
+import 'package:authorship/pages/location_page.dart';
+import 'package:authorship/pages/login_page.dart';
+import 'package:authorship/pages/menu_page.dart';
 
 void main() => runApp(MyApp());
 

@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:authorship/content.dart';
-import 'package:authorship/location.dart';
+import 'package:authorship/models/content.dart';
+import 'package:authorship/models/location.dart';
+import 'package:authorship/models/activity.dart';
+
+import 'package:authorship/screens/list_content_screen.dart';
+import 'package:authorship/screens/list_location_screen.dart';
+
 
 class ActivityPage extends StatefulWidget {
   final String url = "https://pibic-project.herokuapp.com/activity";
@@ -172,20 +177,4 @@ class ActivityPageState extends State<ActivityPage> {
       ),
     );
   }
-}
-
-class Activity {
-  final String title;
-  final String description;
-  final Location location;
-  final Content content;
-
-  Activity(this.title, this.description, this.location, this.content);
-
-  Map<String, dynamic> toJson() => {
-        'title': title,
-        'description': description,
-        'location': location.id,
-        'content': content.id
-      };
 }
