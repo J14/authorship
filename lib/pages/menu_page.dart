@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Menu extends StatelessWidget {
@@ -36,7 +37,9 @@ class Menu extends StatelessWidget {
           ),
           RaisedButton(
             child: Text("Sair"),
-            onPressed: () {
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              prefs.remove('token');
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

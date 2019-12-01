@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:authorship/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApp extends StatefulWidget {
   final String loginUrl = "http://class-path-auth.herokuapp.com/login/";
@@ -27,7 +28,10 @@ class LoginAppState extends State<LoginApp> {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
+      Map data = json.decode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("token", data['token']);
+
       Navigator.pushReplacementNamed(context, '/menu');
     }
 
