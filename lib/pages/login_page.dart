@@ -17,15 +17,21 @@ class LoginAppState extends State<LoginApp> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _loading;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loading = false;
+  }
 
   Future<String> _login(User user) async {
-    var response = await http.post(
-      Uri.encodeFull(widget.loginUrl),
-      body: json.encode(user),
-      headers: {
-        "content-type": "application/json",
-      }
-    );
+    var response = await http.post(Uri.encodeFull(widget.loginUrl),
+        body: json.encode(user),
+        headers: {
+          "content-type": "application/json",
+        });
 
     if (response.statusCode == 200) {
       Map data = json.decode(response.body);
@@ -49,7 +55,6 @@ class LoginAppState extends State<LoginApp> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                autofocus: true,
                 controller: usernameController,
                 decoration: InputDecoration(
                   labelText: "username",
@@ -76,19 +81,27 @@ class LoginAppState extends State<LoginApp> {
                 },
               ),
             ),
-            RaisedButton(
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  User user = User(usernameController.text, passwordController.text);
-
-                  _login(user);
-                }
-              },
-              child: Text("Submit"),
-            ),
+            _loading ? CircularProgressIndicator() : _submit()
           ],
         ),
       ),
+    );
+  }
+
+  Widget _submit() {
+    return RaisedButton(
+      child: Text("Submit"),
+      onPressed: () {
+        if(_formKey.currentState.validate()) {
+          setState(() {
+            _loading = true;
+          });
+
+          User user = User(usernameController.text, passwordController.text);
+
+          _login(user);
+        }
+      },
     );
   }
 }
