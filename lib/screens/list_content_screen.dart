@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:authorship/models/content.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListContent extends StatefulWidget {
-  final String url = "https://pibic-project.herokuapp.com/content";
+  final String url = "http://class-path-content.herokuapp.com/contents/";
 
   @override
   State<ListContent> createState() {
@@ -16,15 +17,24 @@ class ListContent extends StatefulWidget {
 
 class ListContentState extends State<ListContent> {
   List contents;
+  bool _loading;
 
   Future<String> getAllContents() async {
-    var response = await http
-        .get(Uri.encodeFull(widget.url), headers: {"Accept": "application/json"});
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token");
+
+    var response = await http.get(
+      Uri.encodeFull(widget.url),
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "Token $token"
+      }
+    );
 
     setState(() {
-      Map<String, dynamic> dataJson = json.decode(response.body);
-      contents =
-          dataJson['data'].map((content) => Content.fromJson(content)).toList();
+      List data = json.decode(response.body);
+      contents = data.map((content) => Content.fromJson(content)).toList();
+      _loading = false;
     });
 
     return "Successfully";
@@ -35,6 +45,10 @@ class ListContentState extends State<ListContent> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Choice Content"),
+        bottom: PreferredSize(
+          preferredSize: Size(double.infinity, 1.0),
+          child: _loading ? LinearProgressIndicator() : Container(),
+        )
       ),
       body: ListView.builder(
         itemCount: contents == null ? 0 : contents.length,
@@ -70,6 +84,8 @@ class ListContentState extends State<ListContent> {
   @override
   void initState() {
     super.initState();
+
+    _loading = true;
 
     this.getAllContents();
   }

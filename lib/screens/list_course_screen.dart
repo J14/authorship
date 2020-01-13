@@ -1,43 +1,56 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:authorship/models/location.dart';
+import 'package:authorship/models/course.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListLocation extends StatefulWidget {
-  final String url = "https://class-path-location.herokuapp.com/locations/";
+
+class ListCourse extends StatefulWidget {
+
+  final String url = "http://class-path-auth.herokuapp.com/my-courses/";
 
   @override
-  State<ListLocation> createState() {
-    return ListLocationState();
+  State<StatefulWidget> createState() {
+    return ListCourseState();
   }
 }
 
-
-class ListLocationState extends State<ListLocation> {
-  List locations;
+class ListCourseState extends State<ListCourse> {
+  List courses;
   bool _loading;
 
-  Future<String> getAllLocations() async {
+  @override
+  void initState() {
+    super.initState();
+
+    _loading = true;
+
+    this._getAllCourses();
+  }
+
+  Future<String> _getAllCourses() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
-    int teacherId = prefs.getInt("teacher_id");
 
     var response = await http.get(
-      Uri.encodeFull("${widget.url}?teacher_id=$teacherId"),
+      Uri.encodeFull(widget.url),
       headers: {
         "Accept": "application/json",
         "Authorization": "Token $token"
       }
     );
 
-    setState(() {
-      List data = json.decode(response.body);
-      locations = data.map((location) => Location.fromJson(location)).toList();
-      _loading = false;
-    });
+    if (response.statusCode == 200) {
+      setState(() {
+        List data = json.decode(response.body);
+        courses = data.map((course) => Course.fromJson(course)).toList();
+        _loading = false;
+      });
+    }
 
     return "Successfully";
   }
@@ -46,14 +59,14 @@ class ListLocationState extends State<ListLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choice Location"),
+        title: Text("List Courses"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
-          child: _loading ? LinearProgressIndicator() : Container()
-        )
+          child: _loading ? LinearProgressIndicator() : Container(),
+        ),
       ),
       body: ListView.builder(
-        itemCount: locations == null ? 0 : locations.length,
+        itemCount: courses == null ? 0 : courses.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Center(
@@ -65,15 +78,15 @@ class ListLocationState extends State<ListLocation> {
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          locations[index].name,
+                          courses[index].name,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context, locations[index]);
+                      Navigator.pop(context, courses[index]);
                     },
-                  ),
+                  )
                 ],
               ),
             ),
@@ -81,14 +94,5 @@ class ListLocationState extends State<ListLocation> {
         },
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loading = true;
-
-    this.getAllLocations();
   }
 }
