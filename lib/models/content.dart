@@ -1,12 +1,12 @@
 class Content {
-  String id;
+  int id;
   final String title;
   final String description;
 
   Content(this.title, this.description);
 
   Content.fromJson(Map<String, dynamic> dataJson)
-      : this.id = dataJson['_id'],
+      : this.id = dataJson['id'],
         this.title = dataJson['title'],
         this.description = dataJson['description'];
 

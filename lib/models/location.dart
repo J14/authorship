@@ -1,5 +1,5 @@
 class Location {
-  String id;
+  int id;
   final String name;
   final String description;
   final double longitude;
@@ -16,7 +16,7 @@ class Location {
     };
 
   Location.fromJson(Map<String, dynamic> dataJson)
-    : this.id = dataJson['_id'],
+    : this.id = dataJson['id'],
       this.name = dataJson['name'],
       this.description = dataJson['description'],
       this.longitude = dataJson['longitude'],
