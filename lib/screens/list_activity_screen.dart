@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/models/activity.dart';
+import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:authorship/models/activity.dart';
+import 'package:authorship/pages/execute_activity.dart';
 
 class ListActivity extends StatefulWidget {
   final String url = "http://class-path-content.herokuapp.com/activities/";
@@ -75,7 +78,14 @@ class ListActivityState extends State<ListActivity> {
                       ),
                     ),
                     onTap: () {
-                      print(activities[index]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExecuteActivity(
+                            activity: activities[index]
+                          )
+                        )
+                      );
                     },
                   )
                 ],
