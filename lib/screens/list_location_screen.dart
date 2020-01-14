@@ -45,8 +45,14 @@ class ListLocationState extends State<ListLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, "/location");
+        },
+      ),
       appBar: AppBar(
-        title: Text("Choice Location"),
+        title: Text("List Location"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container()
@@ -71,7 +77,7 @@ class ListLocationState extends State<ListLocation> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context, locations[index]);
+                      print(locations[index]);
                     },
                   ),
                 ],

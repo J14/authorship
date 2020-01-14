@@ -6,16 +6,16 @@ import 'dart:async';
 import 'package:authorship/models/content.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListContent extends StatefulWidget {
+class ListContentChoice extends StatefulWidget {
   final String url = "http://class-path-content.herokuapp.com/contents/";
 
   @override
-  State<ListContent> createState() {
-    return ListContentState();
+  State<ListContentChoice> createState() {
+    return ListContentChoiceState();
   }
 }
 
-class ListContentState extends State<ListContent> {
+class ListContentChoiceState extends State<ListContentChoice> {
   List contents;
   bool _loading;
 
@@ -43,14 +43,8 @@ class ListContentState extends State<ListContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, "/content");
-        },
-      ),
       appBar: AppBar(
-        title: Text("List Content"),
+        title: Text("Choice Content"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
@@ -75,7 +69,7 @@ class ListContentState extends State<ListContent> {
                       ),
                     ),
                     onTap: () {
-                      print(contents[index]);
+                      Navigator.pop(context, contents[index]);
                     },
                   )
                 ],

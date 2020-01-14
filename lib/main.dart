@@ -1,3 +1,6 @@
+import 'package:authorship/screens/list_activity_screen.dart';
+import 'package:authorship/screens/list_content_screen.dart';
+import 'package:authorship/screens/list_location_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:authorship/pages/activity_page.dart';
@@ -21,6 +24,9 @@ class MyApp extends StatelessWidget {
         '/location': (context) => LocationPage(),
         '/content': (context) => ContentPage(),
         '/activity': (context) => ActivityPage(),
+        '/listLocation': (context) => ListLocation(),
+        '/listContent': (context) => ListContent(),
+        '/listActivity': (context) => ListActivity()
       }
     );
   }

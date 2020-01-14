@@ -1,25 +1,38 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:authorship/models/content.dart';
+import 'package:authorship/models/course.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListContent extends StatefulWidget {
-  final String url = "http://class-path-content.herokuapp.com/contents/";
+
+class ListCourseChoice extends StatefulWidget {
+
+  final String url = "http://class-path-auth.herokuapp.com/my-courses/";
 
   @override
-  State<ListContent> createState() {
-    return ListContentState();
+  State<StatefulWidget> createState() {
+    return ListCourseChoiceState();
   }
 }
 
-class ListContentState extends State<ListContent> {
-  List contents;
+class ListCourseChoiceState extends State<ListCourseChoice> {
+  List courses;
   bool _loading;
 
-  Future<String> getAllContents() async {
+  @override
+  void initState() {
+    super.initState();
+
+    _loading = true;
+
+    this._getAllCourses();
+  }
+
+  Future<String> _getAllCourses() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
@@ -31,11 +44,13 @@ class ListContentState extends State<ListContent> {
       }
     );
 
-    setState(() {
-      List data = json.decode(response.body);
-      contents = data.map((content) => Content.fromJson(content)).toList();
-      _loading = false;
-    });
+    if (response.statusCode == 200) {
+      setState(() {
+        List data = json.decode(response.body);
+        courses = data.map((course) => Course.fromJson(course)).toList();
+        _loading = false;
+      });
+    }
 
     return "Successfully";
   }
@@ -43,21 +58,15 @@ class ListContentState extends State<ListContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, "/content");
-        },
-      ),
       appBar: AppBar(
-        title: Text("List Content"),
+        title: Text("Choice Courses"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
-        )
+        ),
       ),
       body: ListView.builder(
-        itemCount: contents == null ? 0 : contents.length,
+        itemCount: courses == null ? 0 : courses.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Center(
@@ -69,13 +78,13 @@ class ListContentState extends State<ListContent> {
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          contents[index].title,
+                          courses[index].name,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                     ),
                     onTap: () {
-                      print(contents[index]);
+                      Navigator.pop(context, courses[index]);
                     },
                   )
                 ],
@@ -85,14 +94,5 @@ class ListContentState extends State<ListContent> {
         },
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loading = true;
-
-    this.getAllContents();
   }
 }

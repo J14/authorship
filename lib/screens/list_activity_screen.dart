@@ -3,23 +3,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/models/content.dart';
+import 'package:authorship/models/activity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListContent extends StatefulWidget {
-  final String url = "http://class-path-content.herokuapp.com/contents/";
+class ListActivity extends StatefulWidget {
+  final String url = "http://class-path-content.herokuapp.com/activities/";
 
   @override
-  State<ListContent> createState() {
-    return ListContentState();
+  State<ListActivity> createState() {
+    return ListActivityState();
   }
 }
 
-class ListContentState extends State<ListContent> {
-  List contents;
+class ListActivityState extends State<ListActivity> {
+  List activities;
   bool _loading;
 
-  Future<String> getAllContents() async {
+  Future<String> getAllActivities() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
@@ -33,7 +33,7 @@ class ListContentState extends State<ListContent> {
 
     setState(() {
       List data = json.decode(response.body);
-      contents = data.map((content) => Content.fromJson(content)).toList();
+      activities = data.map((activity) => Activity.fromJson(activity)).toList();
       _loading = false;
     });
 
@@ -46,18 +46,18 @@ class ListContentState extends State<ListContent> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, "/content");
+          Navigator.pushNamed(context, "/activity");
         },
       ),
       appBar: AppBar(
-        title: Text("List Content"),
+        title: Text("List Activity"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
         )
       ),
       body: ListView.builder(
-        itemCount: contents == null ? 0 : contents.length,
+        itemCount: activities == null ? 0 : activities.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Center(
@@ -69,13 +69,13 @@ class ListContentState extends State<ListContent> {
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          contents[index].title,
+                          activities[index].title,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                     ),
                     onTap: () {
-                      print(contents[index]);
+                      print(activities[index]);
                     },
                   )
                 ],
@@ -93,6 +93,6 @@ class ListContentState extends State<ListContent> {
 
     _loading = true;
 
-    this.getAllContents();
+    this.getAllActivities();
   }
 }

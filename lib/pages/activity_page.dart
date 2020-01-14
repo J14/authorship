@@ -9,9 +9,9 @@ import 'package:authorship/models/location.dart';
 import 'package:authorship/models/activity.dart';
 import 'package:authorship/models/course.dart';
 
-import 'package:authorship/screens/list_content_screen.dart';
-import 'package:authorship/screens/list_location_screen.dart';
-import 'package:authorship/screens/list_course_screen.dart';
+import 'package:authorship/screens/list_content_screen_choice.dart';
+import 'package:authorship/screens/list_location_screen_choice.dart';
+import 'package:authorship/screens/list_course_screen_choice.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,7 +114,7 @@ class ActivityPageState extends State<ActivityPage> {
                           var location = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListLocation()));
+                                  builder: (context) => ListLocationChoice()));
 
                           setState(() {
                             this.location = location;
@@ -140,7 +140,7 @@ class ActivityPageState extends State<ActivityPage> {
                           var content = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListContent()));
+                                  builder: (context) => ListContentChoice()));
 
                           setState(() {
                             this.content = content;
@@ -166,7 +166,7 @@ class ActivityPageState extends State<ActivityPage> {
                           var course = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ListCourse()
+                              builder: (context) => ListCourseChoice()
                             )
                           );
 

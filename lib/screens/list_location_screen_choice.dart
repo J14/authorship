@@ -3,28 +3,30 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/models/content.dart';
+import 'package:authorship/models/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListContent extends StatefulWidget {
-  final String url = "http://class-path-content.herokuapp.com/contents/";
+class ListLocationChoice extends StatefulWidget {
+  final String url = "https://class-path-location.herokuapp.com/locations/";
 
   @override
-  State<ListContent> createState() {
-    return ListContentState();
+  State<ListLocationChoice> createState() {
+    return ListLocationChoiceState();
   }
 }
 
-class ListContentState extends State<ListContent> {
-  List contents;
+
+class ListLocationChoiceState extends State<ListLocationChoice> {
+  List locations;
   bool _loading;
 
-  Future<String> getAllContents() async {
+  Future<String> getAllLocations() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
+    int teacherId = prefs.getInt("teacher_id");
 
     var response = await http.get(
-      Uri.encodeFull(widget.url),
+      Uri.encodeFull("${widget.url}?teacher_id=$teacherId"),
       headers: {
         "Accept": "application/json",
         "Authorization": "Token $token"
@@ -33,7 +35,7 @@ class ListContentState extends State<ListContent> {
 
     setState(() {
       List data = json.decode(response.body);
-      contents = data.map((content) => Content.fromJson(content)).toList();
+      locations = data.map((location) => Location.fromJson(location)).toList();
       _loading = false;
     });
 
@@ -43,21 +45,15 @@ class ListContentState extends State<ListContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, "/content");
-        },
-      ),
       appBar: AppBar(
-        title: Text("List Content"),
+        title: Text("Choice Location"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
-          child: _loading ? LinearProgressIndicator() : Container(),
+          child: _loading ? LinearProgressIndicator() : Container()
         )
       ),
       body: ListView.builder(
-        itemCount: contents == null ? 0 : contents.length,
+        itemCount: locations == null ? 0 : locations.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Center(
@@ -69,15 +65,15 @@ class ListContentState extends State<ListContent> {
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          contents[index].title,
+                          locations[index].name,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                     ),
                     onTap: () {
-                      print(contents[index]);
+                      Navigator.pop(context, locations[index]);
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -93,6 +89,6 @@ class ListContentState extends State<ListContent> {
 
     _loading = true;
 
-    this.getAllContents();
+    this.getAllLocations();
   }
 }

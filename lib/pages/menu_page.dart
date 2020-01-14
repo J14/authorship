@@ -7,9 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 
-
 class Menu extends StatefulWidget {
-
   final String url = "http://class-path-auth.herokuapp.com/my-account/";
 
   @override
@@ -19,7 +17,6 @@ class Menu extends StatefulWidget {
 }
 
 class MenuState extends State<Menu> {
-
   @override
   void initState() {
     super.initState();
@@ -31,13 +28,10 @@ class MenuState extends State<Menu> {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
-    var response = await http.get(
-      Uri.encodeFull(widget.url),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": "Token $token"
-      }
-    );
+    var response = await http.get(Uri.encodeFull(widget.url), headers: {
+      "Accept": "application/json",
+      "Authorization": "Token $token"
+    });
 
     if (response.statusCode == 200) {
       Map data = json.decode(response.body);
@@ -52,45 +46,108 @@ class MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10.0),
+      appBar: AppBar(
+        title: Text("Menu"),
+      ),
+      body: GridView.count(
+      padding: const EdgeInsets.symmetric(
+        vertical: 70.0, horizontal: 5.0
+      ),
+      crossAxisCount: 2,
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(10.0),
+          child: RaisedButton(
+            textColor: Colors.white,
+            color: Colors.blue,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                RaisedButton(
-                  child: Text("Criar Localização"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/location');
-                  },
+                Icon(
+                  Icons.map,
+                  size: 40.0,
                 ),
-                RaisedButton(
-                  child: Text("Criar Conteúdo"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/content');
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Criar Atividade"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/activity');
-                  },
+                Text(
+                  "Localização",
+                  style: TextStyle(fontSize: 20.0),
                 ),
               ],
-            )
-          ),
-          RaisedButton(
-            child: Text("Sair"),
-            onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              prefs.remove('token');
-              Navigator.pushReplacementNamed(context, '/');
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, "/listLocation");
             },
           ),
-        ],
-      )
-    );
+        ),
+        Container(
+          padding: const EdgeInsets.all(10.0),
+          child: RaisedButton(
+            textColor: Colors.white,
+            color: Colors.blue,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.bookmark,
+                  size: 40.0,
+                ),
+                Text(
+                  "Conteúdo",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ],
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, "/listContent");
+            },
+          ),
+        ),
+        Container(
+            padding: const EdgeInsets.all(10.0),
+            child: RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.format_list_numbered,
+                    size: 40.0,
+                  ),
+                  Text(
+                    "Atividade",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, "/listActivity");
+              },
+            )),
+        Container(
+            padding: const EdgeInsets.all(10.0),
+            child: RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.exit_to_app,
+                    size: 40.0
+                  ),
+                  Text(
+                    "Sair",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ],
+              ),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.remove('token');
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            )),
+      ],
+    ));
   }
 }
