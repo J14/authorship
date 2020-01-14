@@ -18,12 +18,14 @@ class LoginAppState extends State<LoginApp> {
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _loading;
+  bool _formError;
 
   @override
   void initState() {
     super.initState();
 
     _loading = false;
+    _formError = false;
   }
 
   Future<String> _login(User user) async {
@@ -39,6 +41,12 @@ class LoginAppState extends State<LoginApp> {
       prefs.setString("token", data['token']);
 
       Navigator.pushReplacementNamed(context, '/menu');
+    } else if (response.statusCode == 400) {
+      setState(() {
+        _loading = false;
+        _formError = true;
+        _formKey.currentState.validate();
+      });
     }
 
     return "Successfully";
@@ -61,7 +69,11 @@ class LoginAppState extends State<LoginApp> {
                   hintText: "Enter your username",
                 ),
                 validator: (value) {
-                  if (value.isEmpty) return "Please enter some text";
+                  if (value.isEmpty) {
+                    return "Please enter some text";
+                  } else if (_formError) {
+                    return "Invalid username or password";
+                  }
                   return null;
                 },
               ),
@@ -76,7 +88,11 @@ class LoginAppState extends State<LoginApp> {
                   hintText: "Enter your password",
                 ),
                 validator: (value) {
-                  if (value.isEmpty) return "Please enter some text";
+                  if (value.isEmpty) {
+                    return "Please enter some text";
+                  } else if (_formError) {
+                    return "Invalid username or password";
+                  }
                   return null;
                 },
               ),
@@ -92,6 +108,9 @@ class LoginAppState extends State<LoginApp> {
     return RaisedButton(
       child: Text("Submit"),
       onPressed: () {
+        setState(() {
+          _formError = false;
+        });
         if(_formKey.currentState.validate()) {
           setState(() {
             _loading = true;
