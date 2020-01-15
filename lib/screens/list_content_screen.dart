@@ -32,8 +32,10 @@ class ListContentState extends State<ListContent> {
       }
     );
 
+    String body = utf8.decode(response.bodyBytes);
+
     setState(() {
-      List data = json.decode(response.body);
+      List data = json.decode(body);
       contents = data.map((content) => Content.fromJson(content)).toList();
       _loading = false;
     });

@@ -34,9 +34,11 @@ class LoginAppState extends State<LoginApp> {
         headers: {
           "content-type": "application/json",
         });
+      
+    String body = utf8.decode(response.bodyBytes);
 
     if (response.statusCode == 200) {
-      Map data = json.decode(response.body);
+      Map data = json.decode(body);
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("token", data['token']);
 

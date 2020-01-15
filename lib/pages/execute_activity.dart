@@ -40,7 +40,7 @@ class ExecuteActivityState extends State<ExecuteActivity> {
       widget.location.latitude, widget.location.longitude
     ];
 
-    Map body = {
+    Map data = {
       'origin': origin,
       'destination': destination,
       'threshold': 3
@@ -48,14 +48,16 @@ class ExecuteActivityState extends State<ExecuteActivity> {
 
     var response = await http.post(
       Uri.encodeFull(widget.url),
-      body: json.encode(body),
+      body: json.encode(data),
       headers: {
         'Content-type': 'application/json'
       }
     );
 
+    String body = utf8.decode(response.bodyBytes);
+
     if (response.statusCode == 200) {
-      Map dataJson = json.decode(response.body);
+      Map dataJson = json.decode(body);
       
       if (dataJson['threshold']) {
         contentController.text = widget.content.description;

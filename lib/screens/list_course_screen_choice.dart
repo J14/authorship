@@ -44,9 +44,11 @@ class ListCourseChoiceState extends State<ListCourseChoice> {
       }
     );
 
+    String body = utf8.decode(response.bodyBytes);
+
     if (response.statusCode == 200) {
       setState(() {
-        List data = json.decode(response.body);
+        List data = json.decode(body);
         courses = data.map((course) => Course.fromJson(course)).toList();
         _loading = false;
       });

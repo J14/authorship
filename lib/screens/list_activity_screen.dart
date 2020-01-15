@@ -35,8 +35,10 @@ class ListActivityState extends State<ListActivity> {
       }
     );
 
+    String body = utf8.decode(response.bodyBytes);
+
     setState(() {
-      List data = json.decode(response.body);
+      List data = json.decode(body);
       activities = data.map((activity) => Activity.fromJson(activity)).toList();
       _loading = false;
     });

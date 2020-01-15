@@ -33,8 +33,10 @@ class MenuState extends State<Menu> {
       "Authorization": "Token $token"
     });
 
+    String body = utf8.decode(response.bodyBytes);
+
     if (response.statusCode == 200) {
-      Map data = json.decode(response.body);
+      Map data = json.decode(body);
       int teacherId = data['profile']['teacher_id'];
 
       prefs.setInt("teacher_id", teacherId);

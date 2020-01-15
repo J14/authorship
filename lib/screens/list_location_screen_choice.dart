@@ -33,8 +33,10 @@ class ListLocationChoiceState extends State<ListLocationChoice> {
       }
     );
 
+    String body = utf8.decode(response.bodyBytes);
+
     setState(() {
-      List data = json.decode(response.body);
+      List data = json.decode(body);
       locations = data.map((location) => Location.fromJson(location)).toList();
       _loading = false;
     });
