@@ -65,6 +65,11 @@ class LoginAppState extends State<LoginApp> {
               child: TextFormField(
                 controller: usernameController,
                 decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15.0)
+                    )
+                  ),
                   labelText: "username",
                   hintText: "Enter your username",
                 ),
@@ -84,6 +89,11 @@ class LoginAppState extends State<LoginApp> {
                 controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15.0)
+                    )
+                  ),
                   labelText: "password",
                   hintText: "Enter your password",
                 ),
@@ -97,7 +107,10 @@ class LoginAppState extends State<LoginApp> {
                 },
               ),
             ),
-            _loading ? CircularProgressIndicator() : _submit()
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _loading ? CircularProgressIndicator() : _submit(),
+            )
           ],
         ),
       ),
@@ -105,22 +118,33 @@ class LoginAppState extends State<LoginApp> {
   }
 
   Widget _submit() {
-    return RaisedButton(
-      child: Text("Submit"),
-      onPressed: () {
-        setState(() {
-          _formError = false;
-        });
-        if(_formKey.currentState.validate()) {
+    return ButtonTheme(
+      minWidth: 200,
+      height: 40.0,
+      child: RaisedButton(
+        color: Colors.blue,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        child: Text(
+          "Submit",
+          style: TextStyle(fontSize: 15.0),
+        ),
+        onPressed: () {
           setState(() {
-            _loading = true;
+            _formError = false;
           });
+          if (_formKey.currentState.validate()) {
+            setState(() {
+              _loading = true;
+            });
 
-          User user = User(usernameController.text, passwordController.text);
+            User user = User(usernameController.text, passwordController.text);
 
-          _login(user);
-        }
-      },
+            _login(user);
+          }
+        },
+      ),
     );
   }
 }

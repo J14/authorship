@@ -62,7 +62,6 @@ class ContentPageState extends State<ContentPage> {
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -71,6 +70,11 @@ class ContentPageState extends State<ContentPage> {
                   decoration: InputDecoration(
                     labelText: "title",
                     hintText: "Title of content",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0)
+                      )
+                    )
                   ),
                   validator: (value) {
                     if (value.isEmpty) return "Please enter some text";
@@ -86,7 +90,11 @@ class ContentPageState extends State<ContentPage> {
                   decoration: InputDecoration(
                     labelText: "description",
                     hintText: "Description of content",
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0)
+                      )
+                    ),
                   ),
                   validator: (value) {
                     if (value.isEmpty) return "Please enter some text";
@@ -100,19 +108,6 @@ class ContentPageState extends State<ContentPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Back"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text("Clear"),
-                      onPressed: () {
-                        titleController.clear();
-                        descriptionController.clear();
-                      },
-                    ),
-                    RaisedButton(
                       child: Text("Save"),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
@@ -125,6 +120,40 @@ class ContentPageState extends State<ContentPage> {
                           _save(content);
                         }
                       },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0)
+                        )
+                      ),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                    ),
+                    RaisedButton(
+                      child: Text("Clear"),
+                      onPressed: () {
+                        titleController.clear();
+                        descriptionController.clear();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0)
+                        )
+                      ),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                    ),
+                    RaisedButton(
+                      child: Text("Back"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0)
+                        )
+                      ),
+                      color: Colors.blue,
+                      textColor: Colors.white,
                     ),
                   ],
                 ),
