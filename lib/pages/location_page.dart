@@ -41,7 +41,7 @@ class LocationPageState extends State<LocationPage> {
         });
 
     if (response.statusCode == 201) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
 
     return "Successfully";
@@ -67,6 +67,11 @@ class LocationPageState extends State<LocationPage> {
                 child: TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0)
+                      )
+                    ),
                     labelText: "name",
                     hintText: "Name of Location",
                   ),
@@ -84,7 +89,11 @@ class LocationPageState extends State<LocationPage> {
                   decoration: InputDecoration(
                     labelText: "description",
                     hintText: "Description of Location",
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0)
+                      )
+                    )
                   ),
                   validator: (value) {
                     if (value.isEmpty) return "Please enter some text";
@@ -92,69 +101,119 @@ class LocationPageState extends State<LocationPage> {
                   },
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Column(
                 children: <Widget>[
-                  RaisedButton(
-                    child: Text("Capture location"),
-                    onPressed: () async {
-                      var pos = await Geolocator().getCurrentPosition(
-                          desiredAccuracy: LocationAccuracy.high);
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text("Save"),
+                        onPressed: () {
+                          if (_formKey.currentState.validate() &&
+                              position != null) {
+                            setState(() {
+                              _loading = true;
+                            });
+                            Location location = Location(
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              latitude: position.latitude,
+                              longitude: position.longitude,
+                            );
 
-                      setState(() {
-                        this.position = pos;
-                      });
-                    },
+                            _save(location);
+                          }
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                      ),
+                      RaisedButton(
+                        child: Text("Clear"),
+                        onPressed: () {
+                          nameController.clear();
+                          descriptionController.clear();
+                        },
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15.0)
+                          )
+                        ),
+                      ),
+                      RaisedButton(
+                        child: Text("Back"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                      ),
+                    ],
                   ),
-                  RaisedButton(
-                    child: Text("Save"),
-                    onPressed: () {
-                      if (_formKey.currentState.validate() &&
-                          position != null) {
-                        setState(() {
-                          _loading = true;
-                        });
-                        Location location = Location(
-                          name: nameController.text,
-                          description: descriptionController.text,
-                          latitude: position.latitude,
-                          longitude: position.longitude,
-                        );
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                  ),
+                  Container(
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                    margin: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text("longitude: "),
+                                position == null
+                                    ? Text("")
+                                    : Text(position.longitude.toString())
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text("latitude: "),
+                                position == null
+                                    ? Text("")
+                                    : Text(position.latitude.toString())
+                              ],
+                            ),
+                          ],
+                        ),
+                        ButtonTheme(
+                          minWidth: 150,
+                          height: 40.0,
+                          child: RaisedButton(
+                            child: Text("Capture location"),
+                            onPressed: () async {
+                              var pos = await Geolocator().getCurrentPosition(
+                                  desiredAccuracy: LocationAccuracy.high);
 
-                        _save(location);
-                      }
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text("Back"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                              setState(() {
+                                this.position = pos;
+                              });
+                            },
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text("longitude: "),
-                        position == null
-                            ? Text("")
-                            : Text(position.longitude.toString())
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text("latitude: "),
-                        position == null
-                            ? Text("")
-                            : Text(position.latitude.toString())
-                      ],
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

@@ -84,7 +84,7 @@ class ListCourseState extends State<ListCourse> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context, courses[index]);
+                      print(courses[index]);
                     },
                   )
                 ],

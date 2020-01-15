@@ -1,3 +1,4 @@
+import 'package:authorship/pages/location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -45,8 +46,26 @@ class ListLocationState extends State<ListLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LocationPage()
+            )
+          ).then((value) {
+            if (value != null) {
+              setState(() {
+                _loading = true;
+                getAllLocations();
+              });
+            }
+          });
+        },
+      ),
       appBar: AppBar(
-        title: Text("Choice Location"),
+        title: Text("List Location"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container()
@@ -71,7 +90,7 @@ class ListLocationState extends State<ListLocation> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context, locations[index]);
+                      print(locations[index]);
                     },
                   ),
                 ],
