@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:authorship/pages/activity_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -49,7 +50,19 @@ class ListActivityState extends State<ListActivity> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, "/activity");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ActivityPage()
+            )
+          ).then((value) {
+            if (value != null) {
+              setState(() {
+                _loading = true;
+                getAllActivities();
+              });
+            }
+          });
         },
       ),
       appBar: AppBar(

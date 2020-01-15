@@ -1,3 +1,4 @@
+import 'package:authorship/pages/location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -48,7 +49,19 @@ class ListLocationState extends State<ListLocation> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, "/location");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LocationPage()
+            )
+          ).then((value) {
+            if (value != null) {
+              setState(() {
+                _loading = true;
+                getAllLocations();
+              });
+            }
+          });
         },
       ),
       appBar: AppBar(

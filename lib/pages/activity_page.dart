@@ -52,7 +52,7 @@ class ActivityPageState extends State<ActivityPage> {
         });
 
     if (response.statusCode == 201) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
 
     return "Successfully";

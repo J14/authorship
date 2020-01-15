@@ -41,7 +41,7 @@ class LocationPageState extends State<LocationPage> {
         });
 
     if (response.statusCode == 201) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
 
     return "Successfully";
@@ -106,48 +106,54 @@ class LocationPageState extends State<LocationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      ButtonTheme(
-                        minWidth: 120,
-                        height: 40.0,
-                        child: RaisedButton(
-                          child: Text("Save"),
-                          onPressed: () {
-                            if (_formKey.currentState.validate() &&
-                                position != null) {
-                              setState(() {
-                                _loading = true;
-                              });
-                              Location location = Location(
-                                name: nameController.text,
-                                description: descriptionController.text,
-                                latitude: position.latitude,
-                                longitude: position.longitude,
-                              );
+                      RaisedButton(
+                        child: Text("Save"),
+                        onPressed: () {
+                          if (_formKey.currentState.validate() &&
+                              position != null) {
+                            setState(() {
+                              _loading = true;
+                            });
+                            Location location = Location(
+                              name: nameController.text,
+                              description: descriptionController.text,
+                              latitude: position.latitude,
+                              longitude: position.longitude,
+                            );
 
-                              _save(location);
-                            }
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0))),
-                          color: Colors.blue,
-                          textColor: Colors.white,
+                            _save(location);
+                          }
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                      ),
+                      RaisedButton(
+                        child: Text("Clear"),
+                        onPressed: () {
+                          nameController.clear();
+                          descriptionController.clear();
+                        },
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15.0)
+                          )
                         ),
                       ),
-                      ButtonTheme(
-                        minWidth: 120,
-                        height: 40.0,
-                        child: RaisedButton(
-                          child: Text("Back"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0))),
-                          color: Colors.blue,
-                          textColor: Colors.white,
-                        ),
+                      RaisedButton(
+                        child: Text("Back"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        color: Colors.blue,
+                        textColor: Colors.white,
                       ),
                     ],
                   ),

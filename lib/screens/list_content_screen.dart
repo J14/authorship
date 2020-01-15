@@ -1,3 +1,4 @@
+import 'package:authorship/pages/content_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -46,7 +47,19 @@ class ListContentState extends State<ListContent> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, "/content");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContentPage()
+            )
+          ).then((value) {
+            if (value != null) {
+              setState(() {
+                _loading = true;
+                getAllContents();
+              });
+            }
+          });
         },
       ),
       appBar: AppBar(
