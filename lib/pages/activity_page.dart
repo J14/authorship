@@ -62,7 +62,7 @@ class ActivityPageState extends State<ActivityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Activity"),
+        title: Text("Atividade"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
@@ -78,13 +78,13 @@ class ActivityPageState extends State<ActivityPage> {
                 child: TextFormField(
                   controller: titleController,
                   decoration: InputDecoration(
-                      labelText: "title",
-                      hintText: "Title of activity",
+                      labelText: "título",
+                      hintText: "Informe um título",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0)))),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe um título";
                     return null;
                   },
                 ),
@@ -95,13 +95,13 @@ class ActivityPageState extends State<ActivityPage> {
                   maxLines: 5,
                   controller: descriptionController,
                   decoration: InputDecoration(
-                      labelText: "description",
-                      hintText: "Description of activity",
+                      labelText: "descrição",
+                      hintText: "Descrição da atividade",
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0)))),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe uma descrição";
                     return null;
                   },
                 ),
@@ -121,11 +121,11 @@ class ActivityPageState extends State<ActivityPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Location:"),
+                          Text("Localização:"),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: ButtonTheme(
-                              minWidth: 250.0,
+                              minWidth: 230.0,
                               height: 40.0,
                               child: RaisedButton(
                                 onPressed: () async {
@@ -148,7 +148,7 @@ class ActivityPageState extends State<ActivityPage> {
                                     ? Colors.blue
                                     : Colors.white,
                                 child: location == null
-                                    ? Text("Choice")
+                                    ? Text("Selecionar")
                                     : Text(location.name),
                               ),
                             ),
@@ -161,11 +161,11 @@ class ActivityPageState extends State<ActivityPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Content:"),
+                          Text("Conteúdo:"),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: ButtonTheme(
-                              minWidth: 250.0,
+                              minWidth: 230.0,
                               height: 40.0,
                               child: RaisedButton(
                                 onPressed: () async {
@@ -188,7 +188,7 @@ class ActivityPageState extends State<ActivityPage> {
                                     ? Colors.blue
                                     : Colors.white,
                                 child: content == null
-                                    ? Text("Choice")
+                                    ? Text("Selecionar")
                                     : Text(content.title),
                               ),
                             ),
@@ -201,11 +201,11 @@ class ActivityPageState extends State<ActivityPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Course:"),
+                          Text("Matéria:"),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: ButtonTheme(
-                              minWidth: 250,
+                              minWidth: 230,
                               height: 40.0,
                               child: RaisedButton(
                                 onPressed: () async {
@@ -226,7 +226,7 @@ class ActivityPageState extends State<ActivityPage> {
                                 textColor:
                                     course == null ? Colors.blue : Colors.white,
                                 child: course == null
-                                    ? Text("Choice")
+                                    ? Text("Selecionar")
                                     : Text(course.name),
                               ),
                             ),
@@ -243,7 +243,7 @@ class ActivityPageState extends State<ActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Save"),
+                      child: Text("Salvar"),
                       onPressed: () {
                         if (_formKey.currentState.validate() &&
                             this.content != null &&
@@ -269,7 +269,7 @@ class ActivityPageState extends State<ActivityPage> {
                               BorderRadius.all(Radius.circular(15.0))),
                     ),
                     RaisedButton(
-                      child: Text("Clear"),
+                      child: Text("Limpar"),
                       onPressed: () {
                         titleController.clear();
                         descriptionController.clear();
@@ -286,7 +286,7 @@ class ActivityPageState extends State<ActivityPage> {
                               BorderRadius.all(Radius.circular(15.0))),
                     ),
                     RaisedButton(
-                      child: Text("Back"),
+                      child: Text("Voltar"),
                       onPressed: () {
                         Navigator.pop(context);
                       },

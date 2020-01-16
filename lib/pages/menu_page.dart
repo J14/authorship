@@ -49,7 +49,15 @@ class MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Menu"),
+        title: Center(
+          child: Text(
+            "App Author",
+            style: TextStyle(
+              color: Colors.blue
+            ),
+          ),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: GridView.count(
       padding: const EdgeInsets.symmetric(
