@@ -65,7 +65,7 @@ class ListContentState extends State<ListContent> {
         },
       ),
       appBar: AppBar(
-        title: Text("List Content"),
+        title: Text("Conteúdos"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),

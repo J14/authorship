@@ -51,7 +51,7 @@ class LocationPageState extends State<LocationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Location"),
+        title: Text("Localização"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
@@ -72,11 +72,11 @@ class LocationPageState extends State<LocationPage> {
                         Radius.circular(15.0)
                       )
                     ),
-                    labelText: "name",
-                    hintText: "Name of Location",
+                    labelText: "nome",
+                    hintText: "Nome da localização",
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe um nome";
                     return null;
                   },
                 ),
@@ -87,8 +87,8 @@ class LocationPageState extends State<LocationPage> {
                   maxLines: 5,
                   controller: descriptionController,
                   decoration: InputDecoration(
-                    labelText: "description",
-                    hintText: "Description of Location",
+                    labelText: "descrição",
+                    hintText: "Descrição da localização",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(15.0)
@@ -96,7 +96,7 @@ class LocationPageState extends State<LocationPage> {
                     )
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe uma descrição";
                     return null;
                   },
                 ),
@@ -107,7 +107,7 @@ class LocationPageState extends State<LocationPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       RaisedButton(
-                        child: Text("Save"),
+                        child: Text("Salvar"),
                         onPressed: () {
                           if (_formKey.currentState.validate() &&
                               position != null) {
@@ -131,7 +131,7 @@ class LocationPageState extends State<LocationPage> {
                         textColor: Colors.white,
                       ),
                       RaisedButton(
-                        child: Text("Clear"),
+                        child: Text("Limpar"),
                         onPressed: () {
                           nameController.clear();
                           descriptionController.clear();
@@ -145,7 +145,7 @@ class LocationPageState extends State<LocationPage> {
                         ),
                       ),
                       RaisedButton(
-                        child: Text("Back"),
+                        child: Text("Voltar"),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -194,7 +194,7 @@ class LocationPageState extends State<LocationPage> {
                           minWidth: 150,
                           height: 40.0,
                           child: RaisedButton(
-                            child: Text("Capture location"),
+                            child: Text("Capturar localização"),
                             onPressed: () async {
                               var pos = await Geolocator().getCurrentPosition(
                                   desiredAccuracy: LocationAccuracy.high);

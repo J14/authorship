@@ -68,7 +68,7 @@ class ListActivityState extends State<ListActivity> {
         },
       ),
       appBar: AppBar(
-        title: Text("List Activity"),
+        title: Text("Atividades"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),

@@ -67,7 +67,7 @@ class ListLocationState extends State<ListLocation> {
         },
       ),
       appBar: AppBar(
-        title: Text("List Location"),
+        title: Text("Localizações"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container()

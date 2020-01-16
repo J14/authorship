@@ -72,14 +72,14 @@ class LoginAppState extends State<LoginApp> {
                       Radius.circular(15.0)
                     )
                   ),
-                  labelText: "username",
-                  hintText: "Enter your username",
+                  labelText: "usuário",
+                  hintText: "Informe seu usuário",
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return "Please enter some text";
+                    return "Por favor, informe seu usuário";
                   } else if (_formError) {
-                    return "Invalid username or password";
+                    return "Usuário ou senha incorreto";
                   }
                   return null;
                 },
@@ -96,14 +96,14 @@ class LoginAppState extends State<LoginApp> {
                       Radius.circular(15.0)
                     )
                   ),
-                  labelText: "password",
-                  hintText: "Enter your password",
+                  labelText: "senha",
+                  hintText: "Informe sua senha",
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return "Please enter some text";
+                    return "Por favor, informe sua senha";
                   } else if (_formError) {
-                    return "Invalid username or password";
+                    return "Usuário ou senha incorreto";
                   }
                   return null;
                 },
@@ -129,7 +129,7 @@ class LoginAppState extends State<LoginApp> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: Text(
-          "Submit",
+          "Entrar",
           style: TextStyle(fontSize: 15.0),
         ),
         onPressed: () {

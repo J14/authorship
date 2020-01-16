@@ -52,7 +52,7 @@ class ContentPageState extends State<ContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Content"),
+        title: Text("Conteúdo"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
@@ -68,8 +68,8 @@ class ContentPageState extends State<ContentPage> {
                 child: TextFormField(
                   controller: titleController,
                   decoration: InputDecoration(
-                    labelText: "title",
-                    hintText: "Title of content",
+                    labelText: "título",
+                    hintText: "Informe um título",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(15.0)
@@ -77,7 +77,7 @@ class ContentPageState extends State<ContentPage> {
                     )
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe um título";
                     return null;
                   },
                 ),
@@ -88,8 +88,8 @@ class ContentPageState extends State<ContentPage> {
                   maxLines: 5,
                   controller: descriptionController,
                   decoration: InputDecoration(
-                    labelText: "description",
-                    hintText: "Description of content",
+                    labelText: "descrição",
+                    hintText: "Descrição do conteúdo",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(15.0)
@@ -97,7 +97,7 @@ class ContentPageState extends State<ContentPage> {
                     ),
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return "Please enter some text";
+                    if (value.isEmpty) return "Por favor, informe uma descrição";
                     return null;
                   },
                 ),
@@ -108,7 +108,7 @@ class ContentPageState extends State<ContentPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Save"),
+                      child: Text("Salvar"),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           setState(() {
@@ -129,7 +129,7 @@ class ContentPageState extends State<ContentPage> {
                       textColor: Colors.white,
                     ),
                     RaisedButton(
-                      child: Text("Clear"),
+                      child: Text("Limpar"),
                       onPressed: () {
                         titleController.clear();
                         descriptionController.clear();
@@ -143,7 +143,7 @@ class ContentPageState extends State<ContentPage> {
                       textColor: Colors.white,
                     ),
                     RaisedButton(
-                      child: Text("Back"),
+                      child: Text("Voltar"),
                       onPressed: () {
                         Navigator.pop(context);
                       },
