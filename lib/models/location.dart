@@ -1,9 +1,9 @@
 class Location {
   int id;
-  final String name;
-  final String description;
-  final double longitude;
-  final double latitude;
+  String name;
+  String description;
+  double longitude;
+  double latitude;
 
   Location({this.name, this.description, this.longitude, this.latitude});
 

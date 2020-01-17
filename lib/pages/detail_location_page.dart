@@ -4,23 +4,27 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:authorship/models/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LocationPage extends StatefulWidget {
-  final String url = "https://class-path-location.herokuapp.com/locations/";
+class DetailLocation extends StatefulWidget {
+  final String url = "http://class-path-location.herokuapp.com/locations";
+  final Location location;
+
+  DetailLocation({Key key, @required this.location}) : super(key: key);
 
   @override
-  State<LocationPage> createState() {
-    return LocationPageState();
+  State<StatefulWidget> createState() {
+    return DetailLocationState();
   }
 }
 
-class LocationPageState extends State<LocationPage> {
+class DetailLocationState extends State<DetailLocation> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Location location;
   Position position;
   bool _loading;
 
@@ -28,21 +32,29 @@ class LocationPageState extends State<LocationPage> {
   void initState() {
     super.initState();
 
+    location = widget.location;
+
+    nameController.text = location.name;
+    descriptionController.text = location.description;
+    position =
+        Position(latitude: location.latitude, longitude: location.longitude);
+
     _loading = false;
   }
 
-  Future<String> _save(Location location) async {
+  Future<String> _update(Location location) async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
-    var response = await http.post(Uri.encodeFull(widget.url),
+    var response = await http.patch(
+        Uri.encodeFull("${widget.url}/${location.id}/"),
         body: json.encode(location),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Token $token"
         });
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       Navigator.pop(context, true);
     }
 
@@ -69,11 +81,11 @@ class LocationPageState extends State<LocationPage> {
                 child: TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                    labelText: "nome",
-                    hintText: "Nome da localização",
-                  ),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0))),
+                      labelText: "nome",
+                      hintText: "Nome da localização"),
                   validator: (value) {
                     if (value.isEmpty) return "Por favor, informe um nome";
                     return null;
@@ -111,14 +123,13 @@ class LocationPageState extends State<LocationPage> {
                             setState(() {
                               _loading = true;
                             });
-                            Location location = Location(
-                              name: nameController.text,
-                              description: descriptionController.text,
-                              latitude: position.latitude,
-                              longitude: position.longitude,
-                            );
 
-                            _save(location);
+                            location.name = nameController.text;
+                            location.description = descriptionController.text;
+                            location.latitude = position.latitude;
+                            location.longitude = position.longitude;
+
+                            _update(location);
                           }
                         },
                         shape: RoundedRectangleBorder(
@@ -149,7 +160,7 @@ class LocationPageState extends State<LocationPage> {
                                 BorderRadius.all(Radius.circular(15.0))),
                         color: Colors.blue,
                         textColor: Colors.white,
-                      ),
+                      )
                     ],
                   ),
                   Padding(
@@ -182,7 +193,7 @@ class LocationPageState extends State<LocationPage> {
                                     ? Text("")
                                     : Text(position.latitude.toString())
                               ],
-                            ),
+                            )
                           ],
                         ),
                         Row(
@@ -228,12 +239,12 @@ class LocationPageState extends State<LocationPage> {
                               ),
                             ),
                           ],
-                        ),
+                        )
                       ],
                     ),
-                  ),
+                  )
                 ],
-              ),
+              )
             ],
           ),
         ),
