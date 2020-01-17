@@ -1,11 +1,14 @@
-import 'package:authorship/pages/content_page.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/models/content.dart';
+import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:authorship/models/content.dart';
+import 'package:authorship/pages/content_page.dart';
+import 'package:authorship/pages/detail_content_page.dart';
 
 class ListContent extends StatefulWidget {
   final String url = "http://class-path-content.herokuapp.com/contents/";
@@ -24,13 +27,10 @@ class ListContentState extends State<ListContent> {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
-    var response = await http.get(
-      Uri.encodeFull(widget.url),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": "Token $token"
-      }
-    );
+    var response = await http.get(Uri.encodeFull(widget.url), headers: {
+      "Accept": "application/json",
+      "Authorization": "Token $token"
+    });
 
     String body = utf8.decode(response.bodyBytes);
 
@@ -49,12 +49,9 @@ class ListContentState extends State<ListContent> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContentPage()
-            )
-          ).then((value) {
+          Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ContentPage()))
+              .then((value) {
             if (value != null) {
               setState(() {
                 _loading = true;
@@ -65,12 +62,11 @@ class ListContentState extends State<ListContent> {
         },
       ),
       appBar: AppBar(
-        title: Text("Conteúdos"),
-        bottom: PreferredSize(
-          preferredSize: Size(double.infinity, 1.0),
-          child: _loading ? LinearProgressIndicator() : Container(),
-        )
-      ),
+          title: Text("Conteúdos"),
+          bottom: PreferredSize(
+            preferredSize: Size(double.infinity, 1.0),
+            child: _loading ? LinearProgressIndicator() : Container(),
+          )),
       body: ListView.builder(
         itemCount: contents == null ? 0 : contents.length,
         itemBuilder: (BuildContext context, int index) {
@@ -90,7 +86,20 @@ class ListContentState extends State<ListContent> {
                       ),
                     ),
                     onTap: () {
-                      print(contents[index]);
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailContent(
+                                    content: contents[index]
+                                  )))
+                          .then((value) {
+                        if (value != null) {
+                          setState(() {
+                            _loading = true;
+                            getAllContents();
+                          });
+                        }
+                      });
                     },
                   )
                 ],

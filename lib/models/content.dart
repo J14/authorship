@@ -1,7 +1,7 @@
 class Content {
   int id;
-  final String title;
-  final String description;
+  String title;
+  String description;
 
   Content(this.title, this.description);
 
