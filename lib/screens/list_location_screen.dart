@@ -1,11 +1,13 @@
-import 'package:authorship/pages/location_page.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/models/location.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:authorship/models/location.dart';
+import 'package:authorship/pages/detail_location_page.dart';
+import 'package:authorship/pages/location_page.dart';
 
 class ListLocation extends StatefulWidget {
   final String url = "https://class-path-location.herokuapp.com/locations/";
@@ -16,7 +18,6 @@ class ListLocation extends StatefulWidget {
   }
 }
 
-
 class ListLocationState extends State<ListLocation> {
   List locations;
   bool _loading;
@@ -26,13 +27,11 @@ class ListLocationState extends State<ListLocation> {
     String token = prefs.getString("token");
     int teacherId = prefs.getInt("teacher_id");
 
-    var response = await http.get(
-      Uri.encodeFull("${widget.url}?teacher_id=$teacherId"),
-      headers: {
-        "Accept": "application/json",
-        "Authorization": "Token $token"
-      }
-    );
+    var response = await http
+        .get(Uri.encodeFull("${widget.url}?teacher_id=$teacherId"), headers: {
+      "Accept": "application/json",
+      "Authorization": "Token $token"
+    });
 
     String body = utf8.decode(response.bodyBytes);
 
@@ -51,12 +50,9 @@ class ListLocationState extends State<ListLocation> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LocationPage()
-            )
-          ).then((value) {
+          Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LocationPage()))
+              .then((value) {
             if (value != null) {
               setState(() {
                 _loading = true;
@@ -67,12 +63,10 @@ class ListLocationState extends State<ListLocation> {
         },
       ),
       appBar: AppBar(
-        title: Text("Localizações"),
-        bottom: PreferredSize(
-          preferredSize: Size(double.infinity, 1.0),
-          child: _loading ? LinearProgressIndicator() : Container()
-        )
-      ),
+          title: Text("Localizações"),
+          bottom: PreferredSize(
+              preferredSize: Size(double.infinity, 1.0),
+              child: _loading ? LinearProgressIndicator() : Container())),
       body: ListView.builder(
         itemCount: locations == null ? 0 : locations.length,
         itemBuilder: (BuildContext context, int index) {
@@ -92,7 +86,20 @@ class ListLocationState extends State<ListLocation> {
                       ),
                     ),
                     onTap: () {
-                      print(locations[index]);
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailLocation(
+                                    location: locations[index]
+                                  )))
+                          .then((value) {
+                        if (value != null) {
+                          setState(() {
+                            _loading = true;
+                            getAllLocations();
+                          });
+                        }
+                      });
                     },
                   ),
                 ],
