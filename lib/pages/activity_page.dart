@@ -31,6 +31,7 @@ class ActivityPageState extends State<ActivityPage> {
   Content content;
   Location location;
   Course course;
+  bool multimediaRequired;
   bool _loading;
 
   @override
@@ -38,6 +39,7 @@ class ActivityPageState extends State<ActivityPage> {
     super.initState();
 
     _loading = false;
+    multimediaRequired = false;
   }
 
   Future<String> _save(Activity activity) async {
@@ -101,19 +103,27 @@ class ActivityPageState extends State<ActivityPage> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0)))),
                   validator: (value) {
-                    if (value.isEmpty) return "Por favor, informe uma descrição";
+                    if (value.isEmpty)
+                      return "Por favor, informe uma descrição";
                     return null;
                   },
                 ),
               ),
+              CheckboxListTile(
+                title: const Text("Enviar arquivos multimídia"),
+                value: multimediaRequired,
+                onChanged: (bool value) {
+                  setState(() {
+                    multimediaRequired = !multimediaRequired;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
               Container(
                 margin: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15.0)
-                  )
-                ),
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 child: Column(
                   children: <Widget>[
                     Padding(
@@ -257,7 +267,8 @@ class ActivityPageState extends State<ActivityPage> {
                               description: descriptionController.text,
                               location: this.location,
                               content: this.content,
-                              course: this.course);
+                              course: this.course,
+                              multimediaRequired: this.multimediaRequired);
 
                           _save(activity);
                         }
