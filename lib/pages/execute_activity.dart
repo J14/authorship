@@ -30,6 +30,14 @@ class ExecuteActivity extends StatefulWidget {
 class ExecuteActivityState extends State<ExecuteActivity> {
   final contentController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _loading;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loading = false;
+  }
 
   Future<String> _distance(Position position) async {
     List origin = [position.latitude, position.longitude];
@@ -48,16 +56,22 @@ class ExecuteActivityState extends State<ExecuteActivity> {
       if (dataJson['threshold']) {
         contentController.text = widget.content.description;
       } else {
-        contentController.text = "Localização incorreta";
+        contentController.text = "Você está no local errado";
       }
 
       scaffoldKey.currentState
-        ..removeCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text("${dataJson['distance']}"),
-          ),
-        );
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(
+                "${dataJson['distance'].toStringAsFixed(2)} m"
+              ),
+            ),
+          );
+
+      setState(() {
+        _loading = false;
+      });
     }
 
     return "Successfully";
@@ -68,58 +82,68 @@ class ExecuteActivityState extends State<ExecuteActivity> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Teste da atividade"),
+        bottom: PreferredSize(
+          preferredSize: Size(double.infinity, 1.0),
+          child: _loading ? LinearProgressIndicator() : Container(),
+        ),
       ),
       key: scaffoldKey,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            child: TextFormField(
-              enabled: false,
-              maxLines: 5,
-              decoration: InputDecoration(
-                labelText: "Atividade",
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+              child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                enabled: false,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: "Atividade",
+                  border: OutlineInputBorder(),
+                ),
+                initialValue: widget.activity.description,
               ),
-              initialValue: widget.activity.description,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(15.0),
-            child: Center(
-              child: ButtonTheme(
-                minWidth: 200.0,
-                height: 50.0,
-                child: RaisedButton(
-                  child: Text("Verificar localização"),
-                  onPressed: () async {
-                    Position position = await Geolocator().getCurrentPosition(
-                        desiredAccuracy: LocationAccuracy.high);
+            Container(
+              margin: const EdgeInsets.all(15.0),
+              child: Center(
+                child: ButtonTheme(
+                  minWidth: 200.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    child: Text("Verificar localização"),
+                    onPressed: () async {
+                      setState(() {
+                        _loading = true;
+                      });
 
-                    _distance(position);
-                  },
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                      Position position = await Geolocator().getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.best);
+
+                      _distance(position);
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            child: TextFormField(
-              enabled: false,
-              maxLines: 5,
-              controller: contentController,
-              decoration: InputDecoration(
-                labelText: "Conteúdo",
-                border: OutlineInputBorder(),
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                enabled: false,
+                maxLines: 5,
+                controller: contentController,
+                decoration: InputDecoration(
+                  labelText: "Conteúdo",
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
