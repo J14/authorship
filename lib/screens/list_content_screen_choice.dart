@@ -46,7 +46,7 @@ class ListContentChoiceState extends State<ListContentChoice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choice Content"),
+        title: Text("Escolha um conteúdo"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),

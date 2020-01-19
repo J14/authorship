@@ -61,7 +61,7 @@ class ListCourseChoiceState extends State<ListCourseChoice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choice Courses"),
+        title: Text("Escolha uma matéria"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),

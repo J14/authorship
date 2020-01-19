@@ -197,7 +197,7 @@ class LocationPageState extends State<LocationPage> {
                                   var pos = await Geolocator()
                                       .getCurrentPosition(
                                           desiredAccuracy:
-                                              LocationAccuracy.high);
+                                              LocationAccuracy.best);
 
                                   setState(() {
                                     this.position = pos;

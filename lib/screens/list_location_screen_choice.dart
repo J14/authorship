@@ -48,7 +48,7 @@ class ListLocationChoiceState extends State<ListLocationChoice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choice Location"),
+        title: Text("Escolha uma localização"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container()
