@@ -1,36 +1,36 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:authorship/models/activity_class.dart';
+import 'package:authorship/models/class.dart';
+import 'package:authorship/screens/list_class_screen_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:authorship/models/content.dart';
 import 'package:authorship/models/location.dart';
-import 'package:authorship/models/activity.dart';
-import 'package:authorship/models/course.dart';
 
 import 'package:authorship/screens/list_content_screen_choice.dart';
 import 'package:authorship/screens/list_location_screen_choice.dart';
-import 'package:authorship/screens/list_course_screen_choice.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ActivityPage extends StatefulWidget {
+class ActivityClassPage extends StatefulWidget {
   final String url = "http://class-path-content.herokuapp.com/activities/";
 
   @override
-  State<ActivityPage> createState() {
-    return ActivityPageState();
+  ActivityClassPageState createState() {
+    return ActivityClassPageState();
   }
 }
 
-class ActivityPageState extends State<ActivityPage> {
+class ActivityClassPageState extends State<ActivityClassPage> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Content content;
   Location location;
-  Course course;
+  Class classObj;
   bool _loading;
 
   @override
@@ -40,7 +40,7 @@ class ActivityPageState extends State<ActivityPage> {
     _loading = false;
   }
 
-  Future<String> _save(Activity activity) async {
+  Future<String> _save(ActivityClass activity) async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
 
@@ -201,7 +201,7 @@ class ActivityPageState extends State<ActivityPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Matéria:"),
+                          Text("Turma:"),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: ButtonTheme(
@@ -209,25 +209,25 @@ class ActivityPageState extends State<ActivityPage> {
                               height: 40.0,
                               child: RaisedButton(
                                 onPressed: () async {
-                                  var course = await Navigator.push(
+                                  var classObj = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ListCourseChoice()));
+                                              ListClassChoice()));
 
                                   setState(() {
-                                    this.course = course;
+                                    this.classObj = classObj;
                                   });
                                 },
                                 shape: RoundedRectangleBorder(
                                     side: BorderSide(color: Colors.blue)),
                                 color:
-                                    course == null ? Colors.white : Colors.blue,
+                                    classObj == null ? Colors.white : Colors.blue,
                                 textColor:
-                                    course == null ? Colors.blue : Colors.white,
-                                child: course == null
+                                    classObj == null ? Colors.blue : Colors.white,
+                                child: classObj == null
                                     ? Text("Selecionar")
-                                    : Text(course.name),
+                                    : Text(classObj.name),
                               ),
                             ),
                           )
@@ -248,16 +248,16 @@ class ActivityPageState extends State<ActivityPage> {
                         if (_formKey.currentState.validate() &&
                             this.content != null &&
                             this.location != null &&
-                            this.course != null) {
+                            this.classObj != null) {
                           setState(() {
                             _loading = true;
                           });
-                          Activity activity = Activity(
+                          ActivityClass activity = ActivityClass(
                               title: titleController.text,
                               description: descriptionController.text,
                               location: this.location,
                               content: this.content,
-                              course: this.course);
+                              classObj: this.classObj);
 
                           _save(activity);
                         }
@@ -276,7 +276,7 @@ class ActivityPageState extends State<ActivityPage> {
                         setState(() {
                           content = null;
                           location = null;
-                          course = null;
+                          classObj = null;
                         });
                       },
                       color: Colors.blue,

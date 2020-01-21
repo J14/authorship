@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:authorship/models/course.dart';
+import 'package:authorship/models/class.dart';
 
 import 'package:flutter/material.dart';
 
@@ -9,18 +9,18 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class ListCourse extends StatefulWidget {
+class ListClassChoice extends StatefulWidget {
 
-  final String url = "http://class-path-auth.herokuapp.com/my-courses/";
+  final String url = "http://class-path-auth.herokuapp.com/my-classes/";
 
   @override
   State<StatefulWidget> createState() {
-    return ListCourseState();
+    return ListClassChoiceState();
   }
 }
 
-class ListCourseState extends State<ListCourse> {
-  List courses;
+class ListClassChoiceState extends State<ListClassChoice> {
+  List classes;
   bool _loading;
 
   @override
@@ -29,10 +29,10 @@ class ListCourseState extends State<ListCourse> {
 
     _loading = true;
 
-    this._getAllCourses();
+    this._getAllClasses();
   }
 
-  Future<String> _getAllCourses() async {
+  Future<String> _getAllClasses() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
 
@@ -49,7 +49,7 @@ class ListCourseState extends State<ListCourse> {
     if (response.statusCode == 200) {
       setState(() {
         List data = json.decode(body);
-        courses = data.map((course) => Course.fromJson(course)).toList();
+        classes = data.map((_class) => Class.fromJson(_class)).toList();
         _loading = false;
       });
     }
@@ -61,14 +61,14 @@ class ListCourseState extends State<ListCourse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("List Courses"),
+        title: Text("Escolha uma turma"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1.0),
           child: _loading ? LinearProgressIndicator() : Container(),
         ),
       ),
       body: ListView.builder(
-        itemCount: courses == null ? 0 : courses.length,
+        itemCount: classes == null ? 0 : classes.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Center(
@@ -80,13 +80,13 @@ class ListCourseState extends State<ListCourse> {
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          courses[index].name,
+                          classes[index].name,
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
                     ),
                     onTap: () {
-                      print(courses[index]);
+                      Navigator.pop(context, classes[index]);
                     },
                   )
                 ],

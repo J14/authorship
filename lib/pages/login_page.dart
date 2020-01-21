@@ -41,6 +41,8 @@ class LoginAppState extends State<LoginApp> {
       Map data = json.decode(body);
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("token", data['token']);
+      prefs.setInt("teacher_id", data['user_id']);
+      prefs.setBool("has_institution", data['has_institution']);
 
       Navigator.pushReplacementNamed(context, '/menu');
     } else if (response.statusCode == 400) {

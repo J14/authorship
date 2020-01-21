@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
-import 'package:authorship/models/activity.dart';
 import 'package:authorship/models/location.dart';
 import 'package:authorship/models/content.dart';
 
 class ExecuteActivity extends StatefulWidget {
   final String url = "https://class-path-location.herokuapp.com/distance/";
-  final Activity activity;
+  final activity;
   final Location location;
   final Content content;
 

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:authorship/pages/activity_page.dart';
+import 'package:authorship/models/activity_class.dart';
+import 'package:authorship/pages/activity_course_page.dart';
+import 'package:authorship/pages/activity_class_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -27,6 +29,7 @@ class ListActivityState extends State<ListActivity> {
   Future<String> getAllActivities() async {
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
+    bool hasInstitution = prefs.getBool("has_institution");
 
     var response = await http.get(Uri.encodeFull(widget.url), headers: {
       "Accept": "application/json",
@@ -37,7 +40,11 @@ class ListActivityState extends State<ListActivity> {
 
     setState(() {
       List data = json.decode(body);
-      activities = data.map((activity) => Activity.fromJson(activity)).toList();
+      if (hasInstitution) {
+        activities = data.map((activity) => Activity.fromJson(activity)).toList();
+      } else {
+        activities = data.map((activity) => ActivityClass.fromJson(activity)).toList();
+      }
       _loading = false;
     });
 
@@ -49,9 +56,14 @@ class ListActivityState extends State<ListActivity> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
           Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ActivityPage()))
+                  MaterialPageRoute(
+                    builder: (context) => prefs.getBool("has_institution")
+                        ? ActivityCoursePage()
+                        : ActivityClassPage()
+                  ))
               .then((value) {
             if (value != null) {
               setState(() {

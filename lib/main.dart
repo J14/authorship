@@ -3,7 +3,6 @@ import 'package:authorship/screens/list_content_screen.dart';
 import 'package:authorship/screens/list_location_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:authorship/pages/activity_page.dart';
 import 'package:authorship/pages/content_page.dart';
 import 'package:authorship/pages/location_page.dart';
 import 'package:authorship/pages/login_page.dart';
@@ -23,7 +22,6 @@ class MyApp extends StatelessWidget {
         '/menu': (context) => Menu(),
         '/location': (context) => LocationPage(),
         '/content': (context) => ContentPage(),
-        '/activity': (context) => ActivityPage(),
         '/listLocation': (context) => ListLocation(),
         '/listContent': (context) => ListContent(),
         '/listActivity': (context) => ListActivity()

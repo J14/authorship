@@ -1,50 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:http/http.dart' as http;
-
-class Menu extends StatefulWidget {
-  final String url = "http://class-path-auth.herokuapp.com/my-account/";
-
-  @override
-  State<StatefulWidget> createState() {
-    return MenuState();
-  }
-}
-
-class MenuState extends State<Menu> {
-  @override
-  void initState() {
-    super.initState();
-
-    _loadAccount();
-  }
-
-  Future<String> _loadAccount() async {
-    final prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString("token");
-
-    var response = await http.get(Uri.encodeFull(widget.url), headers: {
-      "Accept": "application/json",
-      "Authorization": "Token $token"
-    });
-
-    String body = utf8.decode(response.bodyBytes);
-
-    if (response.statusCode == 200) {
-      Map data = json.decode(body);
-      int teacherId = data['profile']['teacher_id'];
-
-      prefs.setInt("teacher_id", teacherId);
-    }
-
-    return "Successfully";
-  }
-
+class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
