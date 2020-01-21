@@ -43,7 +43,7 @@ class ExecuteActivityState extends State<ExecuteActivity> {
     List origin = [position.latitude, position.longitude];
     List destination = [widget.location.latitude, widget.location.longitude];
 
-    Map data = {'origin': origin, 'destination': destination, 'threshold': 10};
+    Map data = {'origin': origin, 'destination': destination, 'threshold': 5};
 
     var response = await http.post(Uri.encodeFull(widget.url),
         body: json.encode(data), headers: {'Content-type': 'application/json'});
